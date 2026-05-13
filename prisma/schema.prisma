@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  phone        String?
+  password     String
+  role         String   @default("customer")
+  customerCode String   @unique
+  createdAt    DateTime @default(now())
+  orders       Order[]
+  reviews      Review[]
+}
+
+model MenuItem {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  price       Float
+  category    String
+  image       String?
+  isAvailable Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  orderItems OrderItem[]
+  reviews     Review[]
+}
+model Order {
+  id          String      @id @default(uuid())
+  userId      String
+  totalPrice  Float
+  createdAt   DateTime    @default(now())
+  user        User        @relation(fields: [userId], references: [id])
+  items       OrderItem[]
+  status      OrderStatus @default(pending)
+}
+
+model OrderItem {
+  id          String   @id @default(uuid())
+  orderId     String
+  menuItemId  String
+  quantity    Int
+  price       Float
+
+  order       Order     @relation(fields: [orderId], references: [id])
+  menuItem    MenuItem  @relation(fields: [menuItemId], references: [id])
+}
+model Review {
+  id         String   @id @default(uuid())
+  rating     Int
+  comment    String?
+  userId     String
+  menuItemId String
+  createdAt  DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id])
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+}enum OrderStatus {
+  pending
+  paid
+  preparing
+  ready
+  delivered
+  cancelled
+}
+enum Role {
+  USER
+  ADMIN
+}

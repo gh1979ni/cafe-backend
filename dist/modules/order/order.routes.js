@@ -1,0 +1,17 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const order_controller_1 = require("./order.controller");
+const auth_middleware_1 = require("../../middleware/auth.middleware");
+const admin_middleware_1 = require("../../middleware/admin.middleware");
+const router = (0, express_1.Router)();
+router.post("/", auth_middleware_1.authMiddleware, order_controller_1.OrderController.create);
+router.get("/", auth_middleware_1.authMiddleware, order_controller_1.OrderController.getAll);
+router.get("/admin/all", auth_middleware_1.authMiddleware, admin_middleware_1.adminMiddleware, order_controller_1.OrderController.getAllAdmin);
+router.put("/admin/:id/status", auth_middleware_1.authMiddleware, order_controller_1.OrderController.updateStatus);
+router.patch("/:id/status", auth_middleware_1.authMiddleware, admin_middleware_1.adminMiddleware, order_controller_1.OrderController.updateStatus);
+router.get("/dashboard/stats", auth_middleware_1.authMiddleware, admin_middleware_1.adminMiddleware, order_controller_1.OrderController.dashboard);
+router.get("/dashboard/top-products", auth_middleware_1.authMiddleware, admin_middleware_1.adminMiddleware, order_controller_1.OrderController.topProducts);
+router.get("/dashboard/sales-chart", auth_middleware_1.authMiddleware, admin_middleware_1.adminMiddleware, order_controller_1.OrderController.salesChart);
+router.get("/", auth_middleware_1.authMiddleware, admin_middleware_1.adminMiddleware, order_controller_1.OrderController.getAll);
+exports.default = router;
