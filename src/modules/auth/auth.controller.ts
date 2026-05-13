@@ -32,10 +32,12 @@ export class AuthController {
 
       const user = await prisma.user.create({
         data: {
-          email,
-          password: hashedPassword,
-          role: "admin"
-        }
+  name: "Admin",
+  customerCode: `CUS-${Date.now()}`,
+  email,
+  password: hashedPassword,
+  role: "admin"
+}
       });
 
       res.json(user);
