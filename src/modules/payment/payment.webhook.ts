@@ -2,7 +2,9 @@ import { Request, Response } from "express";
 import Stripe from "stripe";
 import { prisma } from "../../config/db";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+let stripe: any = null;
+
+console.log("Stripe webhook disabled");
 
 export const handleWebhook = async (req: Request, res: Response) => {
   const event = req.body;
