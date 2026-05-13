@@ -1,7 +1,7 @@
-import Stripe from "stripe";
-console.log("Stripe Key:", process.env.STRIPE_SECRET_KEY);
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+let stripe: any = null;
 
+console.log("Stripe is disabled for now");
+console.log("Stripe Key:", process.env.STRIPE_SECRET_KEY);
 export class PaymentService {
 
   static async createCheckoutSession(userId: string, items: any[], totalPrice: number) {

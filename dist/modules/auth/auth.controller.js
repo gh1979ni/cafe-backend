@@ -22,6 +22,8 @@ class AuthController {
             const hashedPassword = await bcryptjs_1.default.hash(password, 10);
             const user = await prisma_1.default.user.create({
                 data: {
+                    name: "Admin",
+                    customerCode: `CUS-${Date.now()}`,
                     email,
                     password: hashedPassword,
                     role: "admin"
