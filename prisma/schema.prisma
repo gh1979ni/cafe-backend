@@ -21,37 +21,38 @@ model User {
 }
 
 model MenuItem {
-  id          String   @id @default(uuid())
+  id          String      @id @default(uuid())
   name        String
   description String?
   price       Float
   category    String
   image       String?
-  isAvailable Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  orderItems OrderItem[]
+  isAvailable Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  orderItems  OrderItem[]
   reviews     Review[]
 }
+
 model Order {
-  id          String      @id @default(uuid())
-  userId      String
-  totalPrice  Float
-  createdAt   DateTime    @default(now())
-  user        User        @relation(fields: [userId], references: [id])
-  items       OrderItem[]
-  status      OrderStatus @default(pending)
+  id         String      @id @default(uuid())
+  userId     String
+  totalPrice Float
+  createdAt  DateTime    @default(now())
+  status     OrderStatus @default(pending)
+  user       User        @relation(fields: [userId], references: [id])
+  items      OrderItem[]
 }
 
 model OrderItem {
-  id          String   @id @default(uuid())
-  orderId     String
-  menuItemId  String
-  quantity    Int
-  price       Float
-
-  order       Order     @relation(fields: [orderId], references: [id])
-  menuItem    MenuItem  @relation(fields: [menuItemId], references: [id])
+  id         String   @id @default(uuid())
+  orderId    String
+  menuItemId String
+  quantity   Int
+  price      Float
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+  order      Order    @relation(fields: [orderId], references: [id])
 }
+
 model Review {
   id         String   @id @default(uuid())
   rating     Int
@@ -59,10 +60,11 @@ model Review {
   userId     String
   menuItemId String
   createdAt  DateTime @default(now())
-
-  user       User     @relation(fields: [userId], references: [id])
   menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
-}enum OrderStatus {
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+enum OrderStatus {
   pending
   paid
   preparing
@@ -70,6 +72,7 @@ model Review {
   delivered
   cancelled
 }
+
 enum Role {
   USER
   ADMIN

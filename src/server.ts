@@ -8,17 +8,11 @@ const app = express();
 import cors from "cors";
 app.use(express.json());
 app.use(cors({
-
   origin: [
-
     "http://localhost:5173",
-
-    "https://YOUR-FRONTEND.vercel.app"
-
+    "https://cafe-admin-lilac.vercel.app"
   ],
-
   credentials: true
-
 }));
 
 app.use("/api/auth", authRoutes);
